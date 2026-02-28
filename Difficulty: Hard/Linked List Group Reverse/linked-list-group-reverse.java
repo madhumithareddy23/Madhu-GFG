@@ -13,48 +13,20 @@ class Node
 
 class Solution {
     public Node reverseKGroup(Node head, int k) {
-        // code here
-        int arr[] = new int[k]; // create to store reverse data
-        ArrayList<Integer> li = new ArrayList<>(); 
-        // this data store in list and then copy into ll
-        
-        Arrays.fill(arr,-1);
-        int c=1;
-        // int i=0;
-        Node ans = head;
-        
-        while(ans!=null){
-            
-            if(c<=k){
-                arr[k-c] = ans.data;
-                ans=ans.next;
-                c++;
-                // i++;
-            }else{
-                
-                for(int j=0;j<k;j++){
-                    li.add(arr[j]);
-                }
-                Arrays.fill(arr,-1);
-                c=1;
-            }
-            
+        Node curr = head;
+        Node prev = null;
+        Node next = null;
+        int count = 0;
+        while (curr != null && count < k) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+            count++;
         }
-        
-        for(int j=0;j<k;j++){
-             li.add(arr[j]);
+        if (next != null) {
+            head.next = reverseKGroup(next, k);
         }
-        
-        ans=head;
-        
-        for(int j=0;j<li.size();j++){
-            
-            if(li.get(j)!=-1){
-                ans.data = li.get(j);
-                ans=ans.next;
-            }
-        }
-        
-        return head;
+        return prev;
     }
 }
